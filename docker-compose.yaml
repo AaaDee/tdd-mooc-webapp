@@ -29,6 +29,8 @@ services:
     environment:
       POSTGRES_USER: webapp
       POSTGRES_PASSWORD: secret
+    volumes:
+      - "./backend/tests/create-tables.sql:/docker-entrypoint-initdb.d/create-tables.sql:ro"
     mem_reservation: 100m
     mem_limit: 200m
     ports:
