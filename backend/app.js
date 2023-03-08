@@ -2,6 +2,7 @@
 const express = require('express')
 const PostgresTodoDao = require('./models/PostgresTodoDao')
 const app = express()
+app.use(express.json())
 
 const conf = {
   user: 'webapp',
@@ -31,12 +32,16 @@ app.get('/todos', (req, res) => {
   res.send(todos)
 })
 
-app.post('/todos', (req, res) => {
+app.post('/todos', async (req, res) => {
   const todo = req.body;
-  console.log('todo recieved', todo)
-  res.status(201).json({})
+  const savedTodo = await dao.save(todo)
+  res.status(201).json(savedTodo)
+
 })
 
+app.close = () => {
+  dao.close()
+}
 
 
 

@@ -2,6 +2,7 @@ import './App.css';
 import { AddNote } from './components/AddNote';
 import { Title } from './components/Title'
 import { TodoList } from './components/TodoList';
+import axios from 'axios'
 
 const todo = {
   id: 1,
@@ -10,10 +11,19 @@ const todo = {
   done: false,
 }
 
+const addNoteHandler =  async (text) => {
+  const newTodo = {
+    name: text,
+    archived: false,
+    done: false,
+  }
+  await axios.post('/todos', newTodo)
+} 
+
 function App() {
   return (<div>
     <Title />
-    <AddNote name='hi'/>
+    <AddNote handleSubmit={addNoteHandler}/>
     <TodoList  todos={[todo]}/>
   </div>
     

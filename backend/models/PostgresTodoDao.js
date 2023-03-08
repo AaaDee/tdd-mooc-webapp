@@ -27,11 +27,11 @@ class PostgresTodoDao {
   }
 
   async save(row) {
-     const todo = await this.db.query(
-      `insert into todos (name, archived, done) values ($1, $2, $3)`,
+    const query= await this.db.query(
+      `insert into todos (name, archived, done) values ($1, $2, $3) returning id, name, archived, done`,
       [row.name, row.archived, row.done]
-    );
-    return row
+    )
+    return query.rows[0]
   }
 
 }

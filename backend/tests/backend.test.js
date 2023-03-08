@@ -34,6 +34,10 @@ describe("Getting data from database", () => {
     todos.close();
   });
 
+  afterAll(async () => {
+    app.close();
+  });
+
   test('Returns success on posting correct new note', async () => {
     await api
     .post('/todos')
@@ -48,5 +52,13 @@ describe("Getting data from database", () => {
   
     const response = await api.get('/todos')
     expect(response.body[0].name).toBe('do something');
+  })
+
+  test('Returns the added note', async () => {
+    const response = await api
+    .post('/todos')
+    .send(todo)
+  
+    expect(response.body.name).toBe('do something');
   })
 });
