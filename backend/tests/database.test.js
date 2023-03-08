@@ -1,5 +1,4 @@
 const PostgresTodoDao = require('../models/PostgresTodoDao')
-
 const conf = {
   user: 'webapp',
   host: process.env.PGHOST,
@@ -8,8 +7,14 @@ const conf = {
   port: process.env.PGPORT,
 }
 
+const todo = {
+  name: "do something",
+  archived: false,
+  done: false,
+}
 
-describe("Connecting to database", () => {
+describe("Getting data from database", () => {
+  let todos;
   beforeEach(async () => {
     todos = new PostgresTodoDao(conf);
     await todos.db.query("insert into todos (id, name, archived, done) values (1, 'do something', false, false)")
@@ -21,7 +26,25 @@ describe("Connecting to database", () => {
   });
 
   it("returns todos", async () => {
-    result = await todos.getAll();
+    const result = await todos.getAll();
+    expect(result[0].name).toBe("do something")
+  });
+});
+
+describe("Sending data to database", () => {
+  let todos;
+  beforeEach(async () => {
+    todos = new PostgresTodoDao(conf);
+  });
+
+  afterEach(async () => {
+    await todos.db.query("delete from todos")
+    todos.close();
+  });
+
+  it("posting a todo", async () => {
+    await todos.save(todo);
+    const result  = await todos.getAll();
     expect(result[0].name).toBe("do something")
   });
 });

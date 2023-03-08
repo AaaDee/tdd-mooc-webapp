@@ -26,6 +26,14 @@ class PostgresTodoDao {
     return rows;
   }
 
+  async save(row) {
+     const todo = await this.db.query(
+      `insert into todos (name, archived, done) values ($1, $2, $3)`,
+      [row.name, row.archived, row.done]
+    );
+    return row
+  }
+
 }
 
 module.exports = PostgresTodoDao;
