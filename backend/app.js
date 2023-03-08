@@ -12,23 +12,14 @@ const conf = {
   port: process.env.PGPORT,
 }
 
-
-const todos = [
-  {
-    id: 1,
-    name: 'do something',
-    archived: false,
-    done: false,
-  }
-]
-
 const dao = new PostgresTodoDao(conf)
 
 app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
 })
 
-app.get('/todos', (req, res) => {
+app.get('/todos', async (req, res) => {
+  const todos = await dao.getAll();
   res.send(todos)
 })
 

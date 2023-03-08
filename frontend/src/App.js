@@ -3,6 +3,7 @@ import { AddNote } from './components/AddNote';
 import { Title } from './components/Title'
 import { TodoList } from './components/TodoList';
 import axios from 'axios'
+import { useEffect, useState } from 'react';
 
 const todo = {
   id: 1,
@@ -18,13 +19,30 @@ const addNoteHandler =  async (text) => {
     done: false,
   }
   await axios.post('/todos', newTodo)
-} 
+}
+
+const useTodos = () => {
+  const [todos, setTodos] = useState([]);
+
+  useEffect(() => {
+    const fetchTodos = async () => {
+      const fetchedTodos = await axios.get('/todos');
+      setTodos(fetchedTodos.data);
+    }
+    
+  fetchTodos();
+  }, [setTodos])
+
+  return todos;
+}
 
 function App() {
+  const todos = useTodos()
+  console.log('app', todos)
   return (<div>
     <Title />
     <AddNote handleSubmit={addNoteHandler}/>
-    <TodoList  todos={[todo]}/>
+    <TodoList  todos={todos}/>
   </div>
     
   );

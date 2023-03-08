@@ -23,6 +23,7 @@ class PostgresTodoDao {
     const { rows } = await this.db.query(
       `select id, name, archived, done from todos`
     );
+    console.log('all rows', rows)
     return rows;
   }
 

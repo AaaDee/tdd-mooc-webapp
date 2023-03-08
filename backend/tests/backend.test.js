@@ -17,10 +17,7 @@ test('Returns hello world', async () => {
   expect(response.text).toBe('<h1>Hello World!</h1>')
 })
 
-test('Returns todos', async () => {
-  const response = await api.get('/todos')
-  expect(response.body[0].name).toBe('do something');
-})
+
 
 describe("Getting data from database", () => {
   let todos;
@@ -60,5 +57,19 @@ describe("Getting data from database", () => {
     .send(todo)
   
     expect(response.body.name).toBe('do something');
+  })
+
+  test('Returns 0 todos at start', async () => {
+    const response = await api.get('/todos')
+    expect(response.body.length).toBe(0);
+  })
+
+  test('Get returns right todo after posting', async () => {
+    await api
+    .post('/todos')
+    .send(todo)
+
+    const response = await api.get('/todos')
+    expect(response.body[0].name).toBe('do something');
   })
 });
