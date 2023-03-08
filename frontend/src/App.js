@@ -1,4 +1,5 @@
 import './App.css';
+import { AddNote } from './components/AddNote';
 import { Title } from './components/Title'
 import { Todo } from './components/Todo';
 
@@ -12,6 +13,7 @@ const todo = {
 function App() {
   return (<div>
     <Title />
+    <AddNote name='hi'/>
     <Todo  todo={todo}/>
   </div>
     
