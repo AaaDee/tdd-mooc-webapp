@@ -4,6 +4,7 @@ import { Title } from './components/Title'
 import { TodoList } from './components/TodoList';
 import axios from 'axios'
 import { useEffect, useState } from 'react';
+import { ArchiveButton } from './components/ArchiveButton';
 
 const addTodoHandler = (updateListener) => async (text) => {
   const newTodo = {
@@ -45,6 +46,8 @@ function App() {
   return (<div>
     <Title />
     <AddNote handleSubmit={addTodoHandler(setShouldUpdate)}/>
+    <br />
+    <ArchiveButton />
     <TodoList  todos={todos} handler={updateTodoHandler(setShouldUpdate)}/>
   </div>
     
