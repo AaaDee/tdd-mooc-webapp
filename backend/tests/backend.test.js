@@ -1,10 +1,9 @@
 const supertest = require('supertest')
 const prepareTodoList = require('../models/prepareTodoList')
 const app = require('../app')
-const PostgresTodoDao = require('../models/PostgresTodoDao')
+const deleteAll = require('./deleteAll')
 
 const api = supertest(app)
-const conf = require('./configuration')
 const { validateNewTodo, validateExistingTodo } = require('../models/validation')
 
 const todo = {
@@ -14,15 +13,8 @@ const todo = {
 }
 
 describe("Backend routes", () => {
-  let todos;
-
-  beforeEach(async () => {
-    todos = new PostgresTodoDao(conf);
-  });
-
   afterEach(async () => {
-    await todos.db.query("delete from todos")
-    todos.close();
+    await deleteAll()
   });
 
   afterAll(async () => {
