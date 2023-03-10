@@ -4,7 +4,7 @@ import { Todo } from './Todo';
 export function TodoList(props) {
   return (
     <ul>
-      {props.todos.map(todo => <Todo key={todo.id} todo={todo}/>)}
+      {props.todos.map(todo => <Todo key={todo.id} todo={todo} handler={props.handler}/>)}
     </ul>
   )
 }

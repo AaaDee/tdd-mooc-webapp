@@ -19,7 +19,7 @@ test('Returns hello world', async () => {
 
 
 
-describe("Backend calls with database", () => {
+describe("Backend routes", () => {
   let todos;
 
   beforeEach(async () => {
@@ -90,5 +90,4 @@ describe("Backend calls with database", () => {
     const response = await api.get('/todos')
     expect(response.body[0].done).toBe(true);
   })
-
 });

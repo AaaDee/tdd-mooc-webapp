@@ -12,13 +12,17 @@ const todo = {
   done: false,
 }
 
-const addNoteHandler =  async (text) => {
+const addTodoHandler =  async (text) => {
   const newTodo = {
     name: text,
     archived: false,
     done: false,
   }
   await axios.post('/todos', newTodo)
+}
+
+const updateTodoHandler = async (todo) => {
+  await axios.put('/todos', todo)
 }
 
 const useTodos = () => {
@@ -41,8 +45,8 @@ function App() {
   console.log('app', todos)
   return (<div>
     <Title />
-    <AddNote handleSubmit={addNoteHandler}/>
-    <TodoList  todos={todos}/>
+    <AddNote handleSubmit={addTodoHandler}/>
+    <TodoList  todos={todos} handler={updateTodoHandler}/>
   </div>
     
   );

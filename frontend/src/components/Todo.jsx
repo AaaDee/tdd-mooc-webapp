@@ -2,7 +2,7 @@ import React from "react";
 
 export function Todo(props) {
   const handleClick = () => {
-    props.handler({id: props.todo.id, done: !props.todo.done})
+    props.handler({...props.todo, done: !props.todo.done})
   }
 
   return(

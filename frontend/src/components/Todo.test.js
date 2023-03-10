@@ -43,7 +43,7 @@ test('set done button returns true', async () => {
   const button = screen.getByText('set done')
   await user.click(button)
 
-  expect(handler.mock.calls[0][0]).toStrictEqual({id: 1, done: true})
+  expect(handler.mock.calls[0][0].done).toBe(true)
 });
 
 test('shows set not done button', () => {
@@ -60,5 +60,5 @@ test('clicking set not done sets to false', async () => {
   const button = screen.getByText('set not done')
   await user.click(button)
 
-  expect(handler.mock.calls[0][0]).toStrictEqual({id: 1, done: false})
+  expect(handler.mock.calls[0][0].done).toBe(false)
 });
