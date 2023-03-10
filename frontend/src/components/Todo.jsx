@@ -2,14 +2,14 @@ import React from "react";
 
 export function Todo(props) {
   const handleClick = () => {
-    props.handler({id: props.todo.id, done: true})
+    props.handler({id: props.todo.id, done: !props.todo.done})
   }
 
   return(
     <div>
       <p>{props.todo.name}</p>
       <p>Done: {`${props.todo.done}`}</p>
-      <button onClick={handleClick}>set done</button>
+      <button onClick={handleClick}>{props.todo.done ? 'set not done' : 'set done'}</button>
     </div>
   )
 }

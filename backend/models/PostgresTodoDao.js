@@ -23,7 +23,6 @@ class PostgresTodoDao {
     const { rows } = await this.db.query(
       `select id, name, archived, done from todos`
     );
-    console.log('all rows', rows)
     return rows;
   }
 
@@ -31,6 +30,18 @@ class PostgresTodoDao {
     const query= await this.db.query(
       `insert into todos (name, archived, done) values ($1, $2, $3) returning id, name, archived, done`,
       [row.name, row.archived, row.done]
+    )
+    return query.rows[0]
+  }
+
+  async update(row) {
+    const query = await this.db.query(
+      `update todos
+       set name = $2, archived = $3, done = $4
+       where id = $1
+       returning id, name, archived, done
+       `,
+      [row.id, row.name, row.archived, row.done]
     )
     return query.rows[0]
   }

@@ -19,7 +19,7 @@ test('Returns hello world', async () => {
 
 
 
-describe("Getting data from database", () => {
+describe("Backend calls with database", () => {
   let todos;
 
   beforeEach(async () => {
@@ -72,4 +72,23 @@ describe("Getting data from database", () => {
     const response = await api.get('/todos')
     expect(response.body[0].name).toBe('do something');
   })
+
+  test('Can be updated', async () => {
+    const savedTodo = await api
+    .post('/todos')
+    .send(todo)
+
+    let data = await api.get('/todos')
+
+    await api
+    .put('/todos')
+    .send({
+      ...data.body[0],
+      done: true
+    })
+
+    const response = await api.get('/todos')
+    expect(response.body[0].done).toBe(true);
+  })
+
 });

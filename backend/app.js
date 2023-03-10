@@ -30,6 +30,13 @@ app.post('/todos', async (req, res) => {
 
 })
 
+app.put('/todos', async (req, res) => {
+  const todo = req.body;
+  const savedTodo = await dao.update(todo)
+  res.status(200).json(savedTodo)
+
+})
+
 app.close = () => {
   dao.close()
 }

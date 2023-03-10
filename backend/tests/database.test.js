@@ -47,4 +47,15 @@ describe("Sending data to database", () => {
     const result  = await todos.getAll();
     expect(result[0].name).toBe("do something")
   });
+
+  it("updating a todo", async () => {
+    await todos.save(todo);
+    const savedTodos = await todos.getAll();
+    todos.update({
+      ...savedTodos[0],
+      done: true
+    })
+    const result  = await todos.getAll();
+    expect(result[0].done).toBe(true)
+  });
 });

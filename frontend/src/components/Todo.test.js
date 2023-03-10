@@ -9,6 +9,13 @@ const todo = {
   done: false,
 }
 
+const doneTodo = {
+  id: 1,
+  name: "do something",
+  archived: false,
+  done: true,
+}
+
 test('renders content', () => {
   render(<Todo todo={todo}/>);
   const element = screen.getByText('do something');
@@ -36,5 +43,22 @@ test('set done button returns true', async () => {
   const button = screen.getByText('set done')
   await user.click(button)
 
-  expect(handler.mock.calls[0][0]).toBe({id: 1, done: true})
+  expect(handler.mock.calls[0][0]).toStrictEqual({id: 1, done: true})
+});
+
+test('shows set not done button', () => {
+  render(<Todo todo={doneTodo}/>);
+  const element = screen.getByText('set not done');
+  expect(element).toBeDefined();
+});
+
+test('clicking set not done sets to false', async () => {
+  const handler = jest.fn()
+  render(<Todo todo={doneTodo} handler={handler}/>);
+
+  const user = userEvent.setup()
+  const button = screen.getByText('set not done')
+  await user.click(button)
+
+  expect(handler.mock.calls[0][0]).toStrictEqual({id: 1, done: false})
 });
