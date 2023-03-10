@@ -12,18 +12,30 @@ const addTodoHandler = (updateListener) => async (text) => {
     archived: false,
     done: false,
   }
-  await axios.post('/todos', newTodo)
-  updateListener(true)
+  try {
+    await axios.post('/todos', newTodo)
+    updateListener(true)
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 const updateTodoHandler = (updateListener) => async (todo) => {
-  await axios.put('/todos', todo)
-  updateListener(true)
+  try {
+    await axios.put('/todos', todo)
+    updateListener(true)
+  } catch (e) {
+    console.log(e)
+  }
 }
 
 const archiveHandler = (updateListener) => async () => {
-  await axios.post('/todos/archive');
-  updateListener(true);
+  try {
+    await axios.post('/todos/archive');
+    updateListener(true);
+  } catch (e) {
+    console.log(e)
+  }
 } 
 
 const useTodos = () => {
