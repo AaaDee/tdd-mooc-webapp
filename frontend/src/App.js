@@ -5,13 +5,6 @@ import { TodoList } from './components/TodoList';
 import axios from 'axios'
 import { useEffect, useState } from 'react';
 
-const todo = {
-  id: 1,
-  name: "do something",
-  archived: false,
-  done: false,
-}
-
 const addTodoHandler =  async (text) => {
   const newTodo = {
     name: text,
@@ -42,7 +35,6 @@ const useTodos = () => {
 
 function App() {
   const todos = useTodos()
-  console.log('app', todos)
   return (<div>
     <Title />
     <AddNote handleSubmit={addTodoHandler}/>

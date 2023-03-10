@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { Todo } from './Todo';
 import userEvent from '@testing-library/user-event'
+import { act } from '@testing-library/react';
 
 const todo = {
   id: 1,
@@ -61,4 +62,20 @@ test('clicking set not done sets to false', async () => {
   await user.click(button)
 
   expect(handler.mock.calls[0][0].done).toBe(false)
+});
+
+test('renaming item', async () => {
+  const handler = jest.fn()
+  render(<Todo todo={doneTodo} handler={handler}/>);
+
+  const user = userEvent.setup()
+  const input = screen.getByRole('textbox')
+  const button = screen.getByText('Edit')
+  
+  await act(async () => {
+    await user.type(input, 'newName')
+    await user.click(button)
+  });  
+
+  expect(handler.mock.calls[0][0].name).toBe('newName')
 });
