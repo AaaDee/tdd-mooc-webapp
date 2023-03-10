@@ -2,6 +2,7 @@
 const express = require('express')
 const PostgresTodoDao = require('./models/PostgresTodoDao')
 const prepareTodoList = require('./models/prepareTodoList')
+const { validateNewTodo, validateExistingTodo } = require('./models/validation')
 
 const app = express()
 app.use(express.static('build'))
@@ -32,6 +33,10 @@ app.get('/todos', async (req, res) => {
 
 app.post('/todos', async (req, res) => {
   const todo = req.body;
+  if (!validateNewTodo(todo)) {
+    res.sendStatus(400)
+    return;
+  }
   try {
     const savedTodo = await dao.save(todo)
     res.status(201).json(savedTodo)
@@ -42,6 +47,10 @@ app.post('/todos', async (req, res) => {
 
 app.put('/todos', async (req, res) => {
   const todo = req.body;
+  if (!validateExistingTodo(todo)) {
+    res.sendStatus(400)
+    return;
+  }
   try {
     const savedTodo = await dao.update(todo)
     res.status(200).json(savedTodo)

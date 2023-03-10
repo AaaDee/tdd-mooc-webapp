@@ -5,6 +5,7 @@ const PostgresTodoDao = require('../models/PostgresTodoDao')
 
 const api = supertest(app)
 const conf = require('./configuration')
+const { validateNewTodo, validateExistingTodo } = require('../models/validation')
 
 const todo = {
   name: "do something",
@@ -73,6 +74,7 @@ describe("Backend routes", () => {
 
     let data = await api.get('/todos')
 
+
     await api
     .put('/todos')
     .send({
@@ -114,3 +116,37 @@ test('Note preparation filters out archived todos', async () => {
   expect(returnedTodos.length).toBe(1);
   expect(archivedTodos.length).toBe(0);
 })
+
+
+describe("Validation", () => {
+  test('New todo without name not validated', async () => {
+    const missingTodo = {
+      done: false,
+      archived: false
+    }
+    expect(validateNewTodo(missingTodo)).toBe(false);
+  });
+  test('New todo without archived not validated', async () => {
+    const missingTodo = {
+      done: false,
+      name: 'something'
+    }
+    expect(validateNewTodo(missingTodo)).toBe(false);
+  })
+  test('New todo without done not validated', async () => {
+    const missingTodo = {
+      name: 'something',
+      archived: false
+    }
+    expect(validateNewTodo(missingTodo)).toBe(false);
+  })
+
+  test('Old todo without id', async () => {
+    const missingTodo = {
+      name: 'something',
+      done: false,
+      archived: false
+    }
+    expect(validateExistingTodo(missingTodo)).toBe(false);
+  });
+});
