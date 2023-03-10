@@ -1,4 +1,5 @@
 const supertest = require('supertest')
+const prepareTodoList = require('../models/prepareTodoList')
 const app = require('../app')
 const PostgresTodoDao = require('../models/PostgresTodoDao')
 
@@ -91,3 +92,20 @@ describe("Backend routes", () => {
     expect(response.body[0].done).toBe(true);
   })
 });
+
+test('Note preparation filters out archived todos', async () => {
+  todoList = [
+    {id: 1, name: 'something', done: false, archived: false},
+    {id: 2, name: 'something', done: false, archived: true},
+  ]
+
+  const dao = {
+    getAll: () => todoList
+  }
+  const returnedTodos = await prepareTodoList(dao);
+
+  const archivedTodos = returnedTodos.filter(todo => todo.archived)
+
+  expect(returnedTodos.length).toBe(1);
+  expect(archivedTodos.length).toBe(0);
+})

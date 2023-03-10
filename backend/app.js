@@ -1,6 +1,7 @@
 
 const express = require('express')
 const PostgresTodoDao = require('./models/PostgresTodoDao')
+const prepareTodoList = require('./models/prepareTodoList')
 const app = express()
 app.use(express.json())
 
@@ -19,7 +20,7 @@ app.get('/', (req, res) => {
 })
 
 app.get('/todos', async (req, res) => {
-  const todos = await dao.getAll();
+  const todos = await prepareTodoList(dao);
   res.send(todos)
 })
 
