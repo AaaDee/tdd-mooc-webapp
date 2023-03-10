@@ -21,7 +21,7 @@ const updateTodoHandler = (updateListener) => async (todo) => {
   updateListener(true)
 }
 
-const archiveHandler = async (updateListener) => {
+const archiveHandler = (updateListener) => async () => {
   await axios.post('/todos/archive');
   updateListener(true);
 } 

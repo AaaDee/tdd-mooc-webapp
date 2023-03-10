@@ -1,4 +1,13 @@
-FROM nginx:1.20
+FROM node:16
+  
+WORKDIR /usr/src/app
 
-RUN mkdir /usr/share/nginx/html/api && \
-    echo "Hello from backend" > /usr/share/nginx/html/api/hello.html
+COPY --chown=node:node . .
+
+RUN npm ci 
+
+ENV DEBUG=playground:*
+  
+USER node
+
+CMD npm start

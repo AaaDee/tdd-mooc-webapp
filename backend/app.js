@@ -2,7 +2,9 @@
 const express = require('express')
 const PostgresTodoDao = require('./models/PostgresTodoDao')
 const prepareTodoList = require('./models/prepareTodoList')
+
 const app = express()
+app.use(express.static('build'))
 app.use(express.json())
 
 const conf = {
@@ -45,8 +47,5 @@ app.post('/todos/archive', async (req, res) => {
 app.close = () => {
   dao.close()
 }
-
-
-
 
 module.exports = app

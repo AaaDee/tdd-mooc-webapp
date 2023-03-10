@@ -1,9 +1,13 @@
-FROM nginx:1.20
+FROM node:16
 
-COPY docker/nginx-default.conf.template /etc/nginx/conf.d/default.conf.template
+WORKDIR /usr/src/app
 
-COPY docker/docker-entrypoint.sh /
-ENTRYPOINT ["/docker-entrypoint.sh"]
-CMD ["nginx", "-g", "daemon off;"]
+COPY . .
 
-COPY html /usr/share/nginx/html
+RUN npm ci
+
+RUN npm run build
+
+RUN npm install -g serve
+
+CMD ["serve", "build"]
