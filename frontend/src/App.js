@@ -5,20 +5,23 @@ import { TodoList } from './components/TodoList';
 import axios from 'axios'
 import { useEffect, useState } from 'react';
 
-const addTodoHandler =  async (text) => {
+const addTodoHandler = (updateListener) => async (text) => {
   const newTodo = {
     name: text,
     archived: false,
     done: false,
   }
   await axios.post('/todos', newTodo)
+  updateListener(true)
 }
 
-const updateTodoHandler = async (todo) => {
+const updateTodoHandler = (updateListener) => async (todo) => {
   await axios.put('/todos', todo)
+  updateListener(true)
 }
 
 const useTodos = () => {
+  const [shouldUpdate, setShouldUpdate] = useState(true);
   const [todos, setTodos] = useState([]);
 
   useEffect(() => {
@@ -26,19 +29,23 @@ const useTodos = () => {
       const fetchedTodos = await axios.get('/todos');
       setTodos(fetchedTodos.data);
     }
-    
-  fetchTodos();
-  }, [setTodos])
+  
+  if (shouldUpdate) {
+    fetchTodos();
+    setShouldUpdate(false);
+  }
+  
+  }, [setTodos, setShouldUpdate, shouldUpdate])
 
-  return todos;
+  return { todos, setShouldUpdate};
 }
 
 function App() {
-  const todos = useTodos()
+  const { todos, setShouldUpdate}  = useTodos()
   return (<div>
     <Title />
-    <AddNote handleSubmit={addTodoHandler}/>
-    <TodoList  todos={todos} handler={updateTodoHandler}/>
+    <AddNote handleSubmit={addTodoHandler(setShouldUpdate)}/>
+    <TodoList  todos={todos} handler={updateTodoHandler(setShouldUpdate)}/>
   </div>
     
   );
