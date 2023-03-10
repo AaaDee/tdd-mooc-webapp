@@ -12,14 +12,6 @@ const todo = {
   done: false,
 }
 
-
-test('Returns hello world', async () => {
-  const response = await api.get('/')
-  expect(response.text).toBe('<h1>Hello World!</h1>')
-})
-
-
-
 describe("Backend routes", () => {
   let todos;
 

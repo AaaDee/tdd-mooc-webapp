@@ -22,26 +22,41 @@ app.get('/', (req, res) => {
 })
 
 app.get('/todos', async (req, res) => {
-  const todos = await prepareTodoList(dao);
-  res.send(todos)
+  try {
+    const todos = await prepareTodoList(dao);
+    res.send(todos)
+  } catch (e) {
+    res.sendStatus(500)
+  }
 })
 
 app.post('/todos', async (req, res) => {
   const todo = req.body;
-  const savedTodo = await dao.save(todo)
-  res.status(201).json(savedTodo)
-
+  try {
+    const savedTodo = await dao.save(todo)
+    res.status(201).json(savedTodo)
+  } catch (e) {
+    res.sendStatus(500)
+  }
 })
 
 app.put('/todos', async (req, res) => {
   const todo = req.body;
-  const savedTodo = await dao.update(todo)
-  res.status(200).json(savedTodo)
+  try {
+    const savedTodo = await dao.update(todo)
+    res.status(200).json(savedTodo)
+  } catch (e) {
+    res.sendStatus(500)
+  }
 })
 
 app.post('/todos/archive', async (req, res) => {
-  await dao.archive()
-  res.status(200).send()
+  try {
+    await dao.archive()
+    res.status(200).send()
+  } catch (e) {
+    res.sendStatus(500)
+  }
 })
 
 app.close = () => {
