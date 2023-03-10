@@ -21,6 +21,11 @@ const updateTodoHandler = (updateListener) => async (todo) => {
   updateListener(true)
 }
 
+const archiveHandler = async (updateListener) => {
+  await axios.post('/todos/archive');
+  updateListener(true);
+} 
+
 const useTodos = () => {
   const [shouldUpdate, setShouldUpdate] = useState(true);
   const [todos, setTodos] = useState([]);
@@ -47,7 +52,7 @@ function App() {
     <Title />
     <AddNote handleSubmit={addTodoHandler(setShouldUpdate)}/>
     <br />
-    <ArchiveButton />
+    <ArchiveButton handler={archiveHandler(setShouldUpdate)} />
     <TodoList  todos={todos} handler={updateTodoHandler(setShouldUpdate)}/>
   </div>
     
