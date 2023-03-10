@@ -46,6 +46,15 @@ class PostgresTodoDao {
     return query.rows[0]
   }
 
+  async archive() {
+    await this.db.query(
+      `update todos
+       set archived = true
+       where done = true
+       `
+    )
+  }
+
 }
 
 module.exports = PostgresTodoDao;

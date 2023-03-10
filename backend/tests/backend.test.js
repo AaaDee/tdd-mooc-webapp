@@ -91,6 +91,19 @@ describe("Backend routes", () => {
     const response = await api.get('/todos')
     expect(response.body[0].done).toBe(true);
   })
+
+  test('Can be archived', async () => {
+    await api
+    .post('/todos')
+    .send({...todo, done: true})
+
+    await api
+    .post('/todos/archive')
+    .send()
+
+    const response = await api.get('/todos')
+    expect(response.body.length).toBe(0);
+  })
 });
 
 test('Note preparation filters out archived todos', async () => {

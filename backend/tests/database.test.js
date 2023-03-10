@@ -58,4 +58,11 @@ describe("Sending data to database", () => {
     const result  = await todos.getAll();
     expect(result[0].done).toBe(true)
   });
+
+  it("archiving a done todo", async () => {
+    await todos.save({...todo, done: true});
+    await todos.archive();
+    const result  = await todos.getAll();
+    expect(result[0].archived).toBe(true);
+  });
 });
