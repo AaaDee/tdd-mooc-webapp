@@ -1,8 +1,12 @@
 
+require('dotenv').config()
 const express = require('express')
 const PostgresTodoDao = require('./models/PostgresTodoDao')
 const prepareTodoList = require('./models/prepareTodoList')
 const { validateNewTodo, validateExistingTodo } = require('./models/validation')
+
+
+console.log('env', process.env.PGUSER)
 
 const app = express()
 app.use(express.json())

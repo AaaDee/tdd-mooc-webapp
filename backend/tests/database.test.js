@@ -1,16 +1,14 @@
 const PostgresTodoDao = require('../models/PostgresTodoDao')
-const conf = {
-  user: 'webapp',
-  host: process.env.PGHOST,
-  database: process.env.PGDATABASE,
-  password: "secret",
-  port: process.env.PGPORT,
-}
 
 const todo = {
   name: "do something",
   archived: false,
   done: false,
+}
+
+const conf = {
+  user: 'webapp',
+  password: 'secret'
 }
 
 describe("Getting data from database", () => {
