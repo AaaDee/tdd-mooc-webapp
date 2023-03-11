@@ -5,18 +5,10 @@ const prepareTodoList = require('./models/prepareTodoList')
 const { validateNewTodo, validateExistingTodo } = require('./models/validation')
 
 const app = express()
-app.use(express.static('build'))
 app.use(express.json())
 
-const conf = {
-  user: 'webapp',
-  host: process.env.PGHOST,
-  database: process.env.PGDATABASE,
-  password: "secret",
-  port: process.env.PGPORT,
-}
 
-const dao = new PostgresTodoDao(conf)
+const dao = new PostgresTodoDao()
 
 app.get('/', (req, res) => {
   res.send('<h1>Hello World!</h1>')
@@ -32,6 +24,7 @@ app.get('/todos', async (req, res) => {
 })
 
 app.post('/todos', async (req, res) => {
+  console.log('post')
   const todo = req.body;
   if (!validateNewTodo(todo)) {
     res.sendStatus(400)

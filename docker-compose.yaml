@@ -1,7 +1,7 @@
 version: "2"
 services:
-  app:
-    image: front-tdd
+  todo-frontend:
+    image: todo-frontend
     build:
       context: ./frontend
       dockerfile: Dockerfile
@@ -9,9 +9,9 @@ services:
       - ./frontend:/usr/src/app
     ports:
       - 3000:3000
-    container_name: front-tdd
-  server:
-    image: backend-tdd
+    container_name: todo-frontend
+  todo-backend:
+    image: todo-backend
     build:
       context: ./backend
       dockerfile: Dockerfile
@@ -19,31 +19,21 @@ services:
       - ./backend/:/usr/src/app
     ports:
       - 3001:3001
-
-  # web:
-  #   build:
-  #     context: frontend
-  #     dockerfile: Dockerfile
-  #   image: webapp-frontend
-  #   environment:
-  #     API_URL: http://api:80
-  #   mem_reservation: 10m
-  #   mem_limit: 20m
-  #   ports:
-  #     - "127.0.0.1:8080:80"
-
-  # api:
-  #   build:
-  #     context: backend
-  #     dockerfile: Dockerfile
-  #   image: webapp-backend
-  #   environment:
-  #     DATABASE_URL: jdbc:postgresql://db:5432/webapp?user=webapp&password=secret
-  #   mem_reservation: 100m
-  #   mem_limit: 200m
-  #   ports:
-  #     - "127.0.0.1:8081:80"
-
+    environment:
+      PGUSER: webapp
+      PGPASSWORD: secret
+      PGPORT: 5432
+      PGHOST: db
+  nginx:
+    image: nginx:1.20.1
+    volumes:
+      - ./nginx.conf:/etc/nginx/nginx.conf:ro
+    ports:
+      - 8080:80
+    container_name: reverse-proxy
+    depends_on:
+      - todo-frontend
+      - todo-backend
   db:
     image: postgres:13
     environment:

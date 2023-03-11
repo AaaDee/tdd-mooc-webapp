@@ -13,7 +13,7 @@ const addTodoHandler = (updateListener) => async (text) => {
     done: false,
   }
   try {
-    await axios.post('/todos', newTodo)
+    await axios.post('api/todos', newTodo)
     updateListener(true)
   } catch (e) {
     console.log(e)
@@ -22,7 +22,7 @@ const addTodoHandler = (updateListener) => async (text) => {
 
 const updateTodoHandler = (updateListener) => async (todo) => {
   try {
-    await axios.put('/todos', todo)
+    await axios.put('api/todos', todo)
     updateListener(true)
   } catch (e) {
     console.log(e)
@@ -31,7 +31,7 @@ const updateTodoHandler = (updateListener) => async (todo) => {
 
 const archiveHandler = (updateListener) => async () => {
   try {
-    await axios.post('/todos/archive');
+    await axios.post('api/todos/archive');
     updateListener(true);
   } catch (e) {
     console.log(e)
@@ -44,8 +44,13 @@ const useTodos = () => {
 
   useEffect(() => {
     const fetchTodos = async () => {
-      const fetchedTodos = await axios.get('/todos');
-      setTodos(fetchedTodos.data);
+      try {
+        const fetchedTodos = await axios.get('api/todos');
+        setTodos(fetchedTodos.data);
+      } catch (e) {
+        console.log(e)
+      }
+      
     }
   
   if (shouldUpdate) {
