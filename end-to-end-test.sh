@@ -1,10 +1,10 @@
 #!/usr/bin/env bash
-set -euxo pipefail
+set -eux pipefail
 
 frontend_response=$(curl --silent --show-error http://localhost:8080/hello.html)
 test "$frontend_response" = "Hello from frontend"
 
-backend_response=$(curl --silent --show-error http://localhost:8080/api/hello.html)
-test "$backend_response" = "Hello from backend"
+backend_response=$(curl --silent --show-error http://localhost:8080/api/)
+test "$backend_response" = "<h1>Hello World!</h1>"
 
 : OK
