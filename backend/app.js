@@ -6,7 +6,6 @@ const prepareTodoList = require('./models/prepareTodoList')
 const { validateNewTodo, validateExistingTodo } = require('./models/validation')
 
 
-console.log('env', process.env.PGUSER)
 
 const app = express()
 app.use(express.json())
@@ -28,7 +27,6 @@ app.get('/todos', async (req, res) => {
 })
 
 app.post('/todos', async (req, res) => {
-  console.log('post')
   const todo = req.body;
   if (!validateNewTodo(todo)) {
     res.sendStatus(400)

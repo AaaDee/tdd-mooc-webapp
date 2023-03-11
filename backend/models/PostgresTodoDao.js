@@ -12,7 +12,6 @@ const defaultConf = {
 class PostgresTodoDao {
   constructor (testingConf) {
     const conf = testingConf ?? defaultConf;
-    console.log('conf',conf)
     this.db = new pg.Pool(conf);
   }
 
@@ -21,13 +20,10 @@ class PostgresTodoDao {
   }
 
   async getAll() {
-    console.log('getall')
     try {
-      console.log('querying')
       const { rows } = await this.db.query(
         `select id, name, archived, done from todos`
       );
-      console.log('rows', rows)
       return rows;
     } catch (e) {
       console.log('error', e)
